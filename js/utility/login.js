@@ -10,7 +10,7 @@ function authCheck(auth, token=null) {
   if (auth) {
     console.log(token);
     alert("ログインに成功しました。");
-    localStorage.setItem("token", token);
+    document.cookie = `token=${token}; max-age=86400; path=/`;
     location.href = "register/index.html";
   }
   else {

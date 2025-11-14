@@ -31,7 +31,10 @@ var discountType = [];
 var selectNumbers = {};
 
 window.addEventListener("load", function(){
-  console.log(localStorage.getItem("token"));
+  const newReleaseBox = document.getElementById("newRelease");
+  const backIssueBox = document.getElementById("backIssue");
+  newReleaseBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
+  backIssueBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
   sendGetAll();
 })
 
@@ -41,8 +44,8 @@ function initialSetup(data) {
   const itemSalesTable = data.itemSales;
   const newReleaseBox = document.getElementById("newRelease");
   const backIssueBox = document.getElementById("backIssue");
-  newReleaseBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
-  backIssueBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
+  newReleaseBox.innerHTML = '';
+  backIssueBox.innerHTML = '';
   productTable.map(product => {
     itemData[product[0]] = new Item(product[0], product[1], product[2], product[3], product[4], product[5]);
     selectNumbers[product[0]] = 0;
@@ -56,25 +59,27 @@ function initialSetup(data) {
     return new Discount(discount[0], discount[1], discount[2], discount[3], targets);
   });
   for (let i = 0; i < itemSalesTable.length; i++) {
-    itemData[itemSalesTable[i][3]] -= itemSalesTable[i][4];
+    itemData[itemSalesTable[i][3]].currentStock -= itemSalesTable[i][4];
   }
   for (let item in itemData) {
-    let color = (item.type.startsWith("H") ? "blue" : (item.type.startsWith("K") ? "orange" : "black"));
+    let i = itemData[item];
+    let color = ((i.type).startsWith("H") ? "blue" : ((i.type).startsWith("K") ? "orange" : "black"));
     let itemHTML = 
       `<div class="item border-${color}-1">
-        <div class="item-category">${item.type}</div>
-        <div class="item-name">${item.name}</div>
-        <div id="dbutton-${item.id}" class="item-button-container"><button>－1</button></div>
-        <div class="item-number"><b id="text-${item.id}">0</b><span> / ${item.currentStock}</span></div>
-        <div id="ibutton-${item.id}" class="item-button-container"><button>＋1</button></div>
+        <div class="item-category">${i.type}</div>
+        <div class="item-name">${i.name}</div>
+        <div id="dbutton-${i.id}" class="item-button-container"><button onclick="decrementItem('${i.id}')" disabled>－1</button></div>
+        <div class="item-number"><b id="text-${i.id}">${i.currentStock <= 0 ? "---" : 0}</b><span> / ${i.currentStock}</span></div>
+        <div id="ibutton-${i.id}" class="item-button-container"><button onclick="incrementItem('${i.id}')" ${i.currentStock <= 0 ? "disabled" : ""}>＋1</button></div>
       </div>`;
-    if (item.isNewRelease) {
+    if (i.isNewRelease) {
       newReleaseBox.innerHTML += itemHTML;
     }
     else {
       backIssueBox.innerHTML += itemHTML;
     }
   }
+  updateState();
 }
 
 function incrementItem(itemId) {
@@ -99,11 +104,12 @@ function decrementItem(itemId) {
 
 function updateItem(itemId) {
   const numberText = document.getElementById("text-" + itemId);
-  const decrementButton = document.getElementById("dbutton-" + itemId);
-  const incrementButton = document.getElementById("ibutton-" + itemId);
+  const decrementButton = document.getElementById("dbutton-" + itemId).firstChild;
+  const incrementButton = document.getElementById("ibutton-" + itemId).firstChild;
   numberText.innerText = String(selectNumbers[itemId]);
-  decrementButton.disabled = (selectNumbers[itemId] <= 0);
-  incrementButton.disabled = (selectNumbers[itemId] >= itemData[itemId].currentStock);
+  if (itemData[itemId].currentStock <= 0) numberText.style.color = "gray";
+  decrementButton.disabled = (itemData[itemId].currentStock <= 0 || selectNumbers[itemId] <= 0);
+  incrementButton.disabled = (itemData[itemId].currentStock <= 0 || selectNumbers[itemId] >= itemData[itemId].currentStock);
   updateState();
 }
 
@@ -135,10 +141,6 @@ function updateSelectList() {
   return totalPrice;
 }
 
-function calculatePrice() {
-
-}
-
 function updateDiscountList() {
   const discountTable = document.getElementById("discountTable"); // 注：これは<tbody>要素 //
   const discountCell = document.getElementById("discountCell");
@@ -157,6 +159,7 @@ function updateDiscountList() {
       case "s": // セット割引 //
         for (let j = 0; j < discount.targetList.length; j++) {
           target = discount.targetList[j];
+          totalRemainNumber = 0;
           for (let k = 0; k < target.ids.length; k++) {
             totalRemainNumber += setRemainNumbers[target.ids[k]];
           }
@@ -174,7 +177,7 @@ function updateDiscountList() {
       case "d": // 複数購入(単価から割引) //
         target = discount.targetList[0];
         for (let j = 0; j < target.ids.length; j++) {
-          totalSelectNumber += selectNumbers[target.ids[k]];
+          totalSelectNumber += selectNumbers[target.ids[j]];
         }
         if (totalSelectNumber >= target.mincount) {
           sets = totalSelectNumber;
@@ -186,7 +189,7 @@ function updateDiscountList() {
       case "m": // 複数購入(一定個数以上で一定額割引) //
         target = discount.targetList[0];
         for (let j = 0; j < target.ids.length; j++) {
-          totalSelectNumber += selectNumbers[target.ids[k]];
+          totalSelectNumber += selectNumbers[target.ids[j]];
         }
         if (totalSelectNumber >= target.mincount) {
           sets = 1;
@@ -209,14 +212,33 @@ function updateDiscountList() {
   return totalDiscount;
 }
 
-function calculateDiscount() {
-
-}
-
 function submitAccount() {
+  if (confirm("選択した冊子がすべて手元にあることを確認しましたか？")) {
+    if (confirm("割引額と合計金額に問題が無いことを確かめ、会計を済ませましたか？")) {
 
-}
+    }
+    else {
+      return;
+    }
+  }
+  else {
+    return;
+  }
 
-function getResult(data) {
+  const submit = document.getElementById("submit-button");
+  submit.disabled = true;
 
+  var totalPrice = updateSelectList();
+  var totalDiscount = updateDiscountList();
+  var finalPrice = Math.max(0, totalPrice - totalDiscount);
+  var date = new Date();
+  var accountData = [date, finalPrice, totalPrice, totalDiscount];
+
+  var totalData = [];
+  for (let select in selectNumbers) {
+    if (selectNumbers[select] == 0) continue;
+    totalData.push([date, select, selectNumbers[select]]);
+  }
+
+  sendPost(totalData, accountData);
 }

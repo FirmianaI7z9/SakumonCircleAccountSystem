@@ -12,11 +12,12 @@
   <link rel="stylesheet" href="../css/style.css">
   <script src="../js/database/database.js"></script>
   <script src="../js/utility/main.js"></script>
+  <script src="../js/utility/cookie.js"></script>
 </head>
 
 <body>
   <div class="main-container border-orange-2">
-    <p class="p-text-white">第76回駒場祭 レジシステム</p>
+    <p class="p-text-white">第76回駒場祭 レジシステム　（まめにページを更新し、在庫数データを反映してください。）</p>
     <hr class="hr-2">
     <div class="main-flex-container">
       <div class="left-container">
@@ -25,35 +26,14 @@
           <div class="left-item-container">
             <p class="p-text-white">新作</p>
             <hr class="hr-1">
-            <div id="newReleaseBox" class="left-overflow-container">
-              <div class="item border-orange-1">
-                <div class="item-category">K3</div>
-                <div class="item-name">第3回東大駒場オープン 数学(文科)</div>
-                <div class="item-button-container"><button>－1</button></div>
-                <div class="item-number"><b>10</b><span> / 300</span></div>
-                <div class="item-button-container"><button>＋1</button></div>
-              </div>
-              <div class="item border-orange-1">
-                <div class="item-category">K3</div>
-                <div class="item-name">第3回東大駒場オープン 数学(理科)</div>
-                <div class="item-button-container"><button disabled>－1</button></div>
-                <div class="item-number"><b>0</b><span> / 300</span></div>
-                <div class="item-button-container"><button>＋1</button></div>
-              </div>
+            <div id="newRelease" class="left-overflow-container">
             </div>
           </div>
           <div class="vr-1"></div>
           <div class="left-item-container">
             <p class="p-text-white">バックナンバー</p>
             <hr class="hr-1">
-            <div id="backIssueBox" class="left-overflow-container">
-              <div class="item border-blue-1">
-                <div class="item-category">H2</div>
-                <div class="item-name">第2回東大本郷レベル模試 国語(文理共通)</div>
-                <div class="item-button-container"><button>－1</button></div>
-                <div class="item-number"><b>2</b><span> / 45</span></div>
-                <div class="item-button-container"><button>＋1</button></div>
-              </div>
+            <div id="backIssue" class="left-overflow-container">
             </div>
           </div>
         </div>
@@ -72,54 +52,6 @@
               </tr>
             </thead>
             <tbody id="selectTable">
-              <tr>
-                <td>第3回東大駒場オープン 国語</td>
-                <td>500</td>
-                <td>2</td>
-                <td>1000</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 数学(文科)</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 数学(理科)</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 英語</td>
-                <td>700</td>
-                <td>2</td>
-                <td>1400</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 日本史</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 世界史</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 物理</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
-              <tr>
-                <td>第3回東大駒場オープン 化学</td>
-                <td>500</td>
-                <td>1</td>
-                <td>500</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -135,30 +67,6 @@
               </tr>
             </thead>
             <tbody id="discountTable">
-              <tr>
-                <td>理系4科セット割引</td>
-                <td>－500</td>
-                <td>1</td>
-                <td>－500</td>
-              </tr>
-              <tr>
-                <td>文系4科セット割引</td>
-                <td>－500</td>
-                <td>1</td>
-                <td>－500</td>
-              </tr>
-              <tr>
-                <td>理科複数購入割引</td>
-                <td>－100</td>
-                <td>2</td>
-                <td>－200</td>
-              </tr>
-              <tr>
-                <td>地歴複数購入割引</td>
-                <td>－100</td>
-                <td>2</td>
-                <td>－200</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -173,19 +81,19 @@
           <tbody>
             <tr style="font-size: 14px;">
               <th>合計</th>
-              <td id="priceCell">5400</td>
+              <td id="priceCell">0</td>
             </tr>
             <tr style="font-size: 14px;">
               <th>割引合計</th>
-              <td id="discountCell">－1400</td>
+              <td id="discountCell">－0</td>
             </tr>
             <tr style="background-color: #ff9933; color: #fff; font-size: 20px; font-weight: 600;">
               <th>総計</th>
-              <td id="resultCell">4000</td>
+              <td id="resultCell">0</td>
             </tr>
           </tbody>
         </table>
-        <button class="submit-button">確定</button>
+        <button id="submit-button" class="submit-button" onclick="submitAccount()">確定</button>
       </div>
     </div>
   </div>

@@ -150,6 +150,14 @@ td {
   font-size: 14px;
 }
 
+.item-name2 {
+  padding: 5px;
+  height: 100%;
+  width: calc(70% - 30px);
+  align-content: center;
+  font-size: 14px;
+}
+
 .item-number {
   padding: 5px 0;
   height: 100%;

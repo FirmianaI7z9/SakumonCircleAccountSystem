@@ -177,7 +177,7 @@ function selectAccount(id) {
     let itemHTML = 
       `<div class="item border-${color}-1">
         <div class="item-category">${j.type}</div>
-        <div class="item-name">${j.name}</div>
+        <div class="item-name2">${j.name}</div>
         <div class="item-number2" id="text-${i.id}">${i.number} 点</div>
         <div class="item-number3" id="text-${i.id}">${(i.number * j.price).toLocaleString()} 円</div>
       </div>`;

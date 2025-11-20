@@ -60,6 +60,7 @@ var itemData = {};
 var discountType = [];
 var itemSalesList = [];
 var accountList = [];
+var selected = 0;
 
 function listData(data) {
   const productTable = data.product;
@@ -112,7 +113,7 @@ function listData(data) {
       hourlySales += i.result;
     }
     let itemHTML = 
-      `<div class="account-item">
+      `<div id="account-${i.id}" class="account-item">
         <div class="account-item-id">#${('0000' + i.id).slice(-4)}</div>
         <div class="account-item-right">
           <div class="account-item-topright">
@@ -183,6 +184,15 @@ function selectAccount(id) {
       </div>`;
     accountDetailBox.innerHTML += itemHTML;
   }
+  const accountItem = document.getElementById(`account-${id}`);
+  accountItem.classList = ["account-item-selected"];
+  if (selected !== 0) {
+    const accountItem = document.getElementById(`account-${selected}`);
+    accountItem.classList = ["account-item"];
+  }
+  selected = id;
+  const idText = document.getElementById('selected-id');
+  idText.innerText = '《#' + ('0000' + id).slice(-4) + '》';
 }
 
 async function countupText(text, begin, end, step, toLocale=false) {

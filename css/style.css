@@ -319,11 +319,32 @@ td {
   overflow: hidden;
 }
 
-.account-item-id {
+.account-item-selected {
+  border: solid 1px #ff9933;
+  border-radius: 5px;
+  height: 60px;
+  display: flex;
+  position: relative;
+  margin-bottom: 5px;
+  overflow: hidden;
+  background-color: #ff9933;
+  color: white;
+}
+
+.account-item>.account-item-id {
   height: 100%;
   width: 12%;
   background-color: #ff9933;
   color: white;
+  align-content: center;
+  text-align: center;
+}
+
+.account-item-selected>.account-item-id {
+  height: 100%;
+  width: 12%;
+  background-color: white;
+  color: #ff9933;
   align-content: center;
   text-align: center;
 }
@@ -346,12 +367,20 @@ td {
   display: flex;
 }
 
-.account-item-text1 {
+.account-item .account-item-text1 {
   height: 100%;
   font-size: 12px;
   align-content: center;
   text-align: left;
   color: gray;
+}
+
+.account-item-selected .account-item-text1 {
+height: 100%;
+  font-size: 12px;
+  align-content: center;
+  text-align: left;
+  color: white;
 }
 
 .account-item-text2 {

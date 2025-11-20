@@ -1,5 +1,5 @@
 const Constants = {
-  GASUrl: "https://script.google.com/macros/s/AKfycbzyLBz7h2pJ5eAhAFhytsS7jBui1UkYXh-7xoirefJV-13HLF-2rI6eYBjpGzzAFuuSEw/exec",
+  GASUrl: "https://script.google.com/macros/s/AKfycbxvBXHZYhAOdvjJd9SbNU4UdjM4rPvwwid0KqczEF4HCJZu3vFH1pca340ZY-SR4eCjVA/exec",
 };
 
 function sendGetAuth(userId, password) {
@@ -32,6 +32,17 @@ function sendPost(totalData, accountData) {
     },
     body: JSON.stringify({ method: "submit", token: getCookie("token"), totalData: totalData, accountData: accountData}),
   };
+  fetchData(options, "sendResult");
+}
+
+function getList() {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain",
+    },
+    body: JSON.stringify({ method: "all", token: getCookie("token")}),
+  };
   fetchData(options, "getList");
 }
 
@@ -54,7 +65,7 @@ async function fetchData(options, type="login") {
           location.href = "../index.html";
         }
         break;
-      case "getList":
+      case "sendResult":
         if (data.auth) {
           document.cookie = `token=${data.token}; max-age=86400; path=/`;
           if (data.result) {
@@ -63,7 +74,7 @@ async function fetchData(options, type="login") {
           }
           else {
             alert("送信に失敗しました。他レジとの競合により在庫数データが最新でない、または過去の会計情報を正しく登録していない可能性があります。");
-            alert("今回の会計の内容はレジ付近にある記録用紙に書き、すぐに担当者(祖父江)に連絡してください。");
+            alert("今回の会計の内容はレジ付近にある記録用紙に書き、すぐに担当者に連絡してください。");
             const submit = document.getElementById("submit-button");
             submit.disabled = false;
           }
@@ -73,9 +84,20 @@ async function fetchData(options, type="login") {
           location.href = "../index.html";
         }
         break;
+      case "getList":
+        if (data.auth) {
+          document.cookie = `token${data.token}; max-age=86400; path=/`;
+          listData(data);
+        }
+        else {
+          alert("権限がない、またはセッション終了済みです。再度ログインしてください。");
+          location.href = "../index.html";
+        }
+        break;
     }
   }
   catch (error) {
-    console.error("InternalError:", error);
+    alert("データ取得・送信に失敗しました。会計中の場合は、内容を紙に書いて記録し、その他の場合はページを再読み込みしてください。解決しない場合は担当者に連絡してください。");
+    console.error("次のメッセージを担当者に連絡してください：", error);
   }
 }

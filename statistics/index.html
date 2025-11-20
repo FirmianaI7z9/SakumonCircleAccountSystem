@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+  <title>会計記録 | 東京大学作問サークル会計集計システム</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/database/database.js"></script>
+  <script src="../js/utility/statistics.js"></script>
+  <script src="../js/utility/cookie.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.js" integrity="sha512-D4pL3vNgjkHR/qq+nZywuS6Hg1gwR+UzrdBW6Yg8l26revKyQHMgPq9CLJ2+HHalepS+NuGw1ayCCsGXu9JCXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <div class="main-container border-orange-2">
+    <p class="p-text-white">東京大学作問サークル会計集計システム　<a href="../register/index.html" style="color: #ff9933;">レジ</a></p>
+    <hr class="hr-2">
+    <p class="p-text-orange">会計記録</p>
+    <div class="main-flex-container" style="height: calc(100% - 67.4px);">
+      <div style="width: calc(100% / 3 - 0.5px); height: 100%;">
+        <p class="p-text-white">統計</p>
+        <hr class="hr-1">
+        <div style="display: flex; width: 100%; height: 50px; padding: 5px 10px;">
+          <div class="account-item-text2">売上合計</div>
+          <div id="totalSalesText" class="account-item-number2">---</div>
+          <div class="account-item-text2">円</div>
+        </div>
+        <hr class="hr-1">
+        <div style="display: flex; width: 100%; height: 50px; padding: 5px 10px;">
+          <div class="account-item-text2">販売冊子数</div>
+          <div id="totalItemCountText" class="account-item-number2">---</div>
+          <div class="account-item-text2">冊</div>
+        </div>
+        <hr class="hr-1">
+        <div style="display: flex; width: 100%; height: 50px; padding: 5px 10px;">
+          <div class="account-item-text2">日売上合計</div>
+          <div id="dailySalesText" class="account-item-number2">---</div>
+          <div class="account-item-text2">円</div>
+        </div>
+        <hr class="hr-1">
+        <div style="display: flex; width: 100%; height: 50px; padding: 5px 10px;">
+          <div class="account-item-text2">1時間売上合計</div>
+          <div id="hourlySalesText" class="account-item-number2">---</div>
+          <div class="account-item-text2">円</div>
+        </div>
+        <hr class="hr-1">
+        <div style="width: 100%; height: 260px; padding: 5px 10px;">
+          <div style="font-size: 14px;">1時間合計推移</div>
+          <canvas id="chart-hour" style="width: calc(100% - 20px); height: 220px;"></canvas>
+        </div>
+        <hr class="hr-1">
+      </div>
+      <div class="vr-1"></div>
+      <div style="width: calc(100% / 3 - 0.5px); height: 100%;">
+        <p class="p-text-white">会計一覧</p>
+        <hr class="hr-1">
+        <div id="accountBox" class="left-overflow-container">
+        </div>
+      </div>
+      <div class="vr-1"></div>
+      <div style="width: calc(100% / 3); height: 100%;">
+        <p class="p-text-white">会計詳細</p>
+        <hr class="hr-1">
+        <div id="accountDetailBox" class="left-overflow-container">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

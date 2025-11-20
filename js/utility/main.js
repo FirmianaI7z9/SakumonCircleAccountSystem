@@ -24,7 +24,7 @@ class Target {
     this.ids = ids;
     this.mincount = mincount;
   }
-}
+};
 
 var itemData = {};
 var discountType = [];
@@ -36,7 +36,7 @@ window.addEventListener("load", function(){
   newReleaseBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
   backIssueBox.innerHTML = '<p class="p-text-white" style="text-align: center;">Now Loading...</p>';
   sendGetAll();
-})
+});
 
 function initialSetup(data) {
   const productTable = data.product;
@@ -79,6 +79,10 @@ function initialSetup(data) {
       backIssueBox.innerHTML += itemHTML;
     }
   }
+  const nameField = document.getElementById("name-field");
+  nameField.value = getCookie("charge");
+  const submit = document.getElementById("submit-button");
+  submit.disabled = false;
   updateState();
 }
 
@@ -213,6 +217,14 @@ function updateDiscountList() {
 }
 
 function submitAccount() {
+  const nameField = document.getElementById("name-field");
+  if (nameField.value === '') {
+    alert("名前を入力してください。");
+    return;
+  }
+
+  document.cookie = `charge=${nameField.value}; max-age=86400; path=/`;
+
   if (confirm("選択した冊子がすべて手元にあることを確認しましたか？")) {
     if (confirm("割引額と合計金額に問題が無いことを確かめ、会計を済ませましたか？")) {
 
@@ -232,12 +244,18 @@ function submitAccount() {
   var totalDiscount = updateDiscountList();
   var finalPrice = Math.max(0, totalPrice - totalDiscount);
   var date = new Date();
-  var accountData = [date, finalPrice, totalPrice, totalDiscount];
+  var accountData = [date, finalPrice, totalPrice, totalDiscount, nameField.value];
 
   var totalData = [];
   for (let select in selectNumbers) {
     if (selectNumbers[select] == 0) continue;
     totalData.push([date, select, selectNumbers[select]]);
+  }
+
+  if (totalData.length === 0) {
+    alert("商品が選択されていません。");
+    submit.disabled = false;
+    return;
   }
 
   sendPost(totalData, accountData);

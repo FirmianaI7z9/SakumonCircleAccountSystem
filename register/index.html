@@ -17,7 +17,7 @@
 
 <body>
   <div class="main-container border-orange-2">
-    <p class="p-text-white">第76回駒場祭 レジシステム　（まめにページを更新し、在庫数データを反映してください。）</p>
+    <p class="p-text-white">東京大学作問サークル会計集計システム　（まめにページを更新し、在庫数データを反映してください。）　<a href="../statistics/index.html" style="color: #ff9933;">履歴</a></p>
     <hr class="hr-2">
     <div class="main-flex-container">
       <div class="left-container">
@@ -93,7 +93,10 @@
             </tr>
           </tbody>
         </table>
-        <button id="submit-button" class="submit-button" onclick="submitAccount()">確定</button>
+        <div class="register-result-container">
+          <input id="name-field" placeholder="今操作している人の名前" style="margin-right: 10px; border: solid 1px #ff9933; border-radius: 5px; width: calc(100% - 100px);"></input>
+          <button id="submit-button" class="submit-button" onclick="submitAccount()" disabled>確定</button>
+        </div>
       </div>
     </div>
   </div>

@@ -117,7 +117,7 @@ function listData(data) {
         <div class="account-item-id">#${('0000' + i.id).slice(-4)}</div>
         <div class="account-item-right">
           <div class="account-item-topright">
-            <div class="account-item-text1" style="width: 70%;">確定日時：${date.getFullYear()}年${date.getMonth()}月${date.getDate()}日 ${date.getHours()}時${('00' + date.getMinutes()).slice(-2)}分${('00' + date.getSeconds()).slice(-2)}秒${('000' + date.getMilliseconds()).slice(-3)}</div>
+            <div class="account-item-text1" style="width: 70%;">確定日時：${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}時${('00' + date.getMinutes()).slice(-2)}分${('00' + date.getSeconds()).slice(-2)}秒${('000' + date.getMilliseconds()).slice(-3)}</div>
             <div class="account-item-text1" style="width: 30%;">担当：${i.charge}</div>
           </div>
           <div class="account-item-bottomright">
